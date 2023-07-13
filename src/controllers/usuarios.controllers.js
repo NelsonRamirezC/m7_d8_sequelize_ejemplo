@@ -27,12 +27,10 @@ export const findById = async (req, res) => {
             attributes: ["id", "nombre", "apellido", "email"],
         });
         if (!usuario) {
-            return res
-                .status(400)
-                .json({
-                    code: 400,
-                    message: "No existe un usuario registrado con el id: " + id,
-                });
+            return res.status(400).json({
+                code: 400,
+                message: "No existe un usuario registrado con el id: " + id,
+            });
         }
         res.json({ code: 200, message: "ok", data: usuario });
     } catch (error) {
@@ -120,8 +118,6 @@ export const deleteUsuario = async (req, res) => {
     }
 };
 
-
-
 export const updateUsuario = async (req, res) => {
     let id = Number(req.params.id);
     try {
@@ -135,14 +131,14 @@ export const updateUsuario = async (req, res) => {
             attributes: ["id", "nombre", "apellido", "email"],
         });
 
-         if (!usuario) {
-             return res.status(400).json({
-                 code: 400,
-                 message:
-                     "El usuario que intenta actualizar no existe, id: " + id,
-             });
+        if (!usuario) {
+            return res.status(400).json({
+                code: 400,
+                message:
+                    "El usuario que intenta actualizar no existe, id: " + id,
+            });
         }
-        
+
         usuario.update(req.body);
 
         res.status(201).json({ code: 201, message: "ok", data: usuario });
@@ -150,8 +146,7 @@ export const updateUsuario = async (req, res) => {
         console.log("Error updateUsuario", error);
         res.status(500).json({
             code: 500,
-            message:
-                "Error al intentar actualizar el usuario",
+            message: "Error al intentar actualizar el usuario",
         });
     }
 };
