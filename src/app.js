@@ -16,6 +16,7 @@ app.use(morgan("tiny"));
 app.use("/api/v1/usuarios", usuariosRoutes);
 
 
+
 app.all("*", (req, res) => {
     res.status(404).send("<h1 style='text-align:center; padding-top: 10px;'>RUTA NO EXISTE.</h1>");
 })
