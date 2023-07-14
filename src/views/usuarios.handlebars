@@ -20,13 +20,14 @@
 {{else}}
     {{#if usuarios}}
         <h2 class="text-center py-3">Listado de usuarios en el sistema.</h2>
-            <table class="table">
+            <table class="table tableUsuarios">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Detalles</th>
                         <th scope="col">Modificar</th>
                         <th scope="col">Eliminar</th>
                     </tr>
@@ -38,8 +39,9 @@
                             <td>{{this.nombre}}</td>
                             <td>{{this.apellido}}</td>
                             <td>{{this.email}}</td>
+                            <td><a href="/detalles/usuario/{{this.id}}" class="btn btn-info">Ver detalles</a></td>
                             <td><button class="btn btn-warning">Modificar</button></td>
-                            <td><button class="btn btn-danger">Eliminar</button></td>
+                            <td><button class="btn btn-danger" data-id="{{this.id}}">Eliminar</button></td>
                         </tr>
                     {{/each }}
                 </tbody>
@@ -53,6 +55,7 @@
 <script>
     let formAddUsuario = document.getElementById("formAddUsuario");
 
+//INICIO SCRIPT PARA CREAR NUEVOS USUARIOS
     formAddUsuario.addEventListener("submit", (event) => {
         event.preventDefault();
 
@@ -84,4 +87,40 @@
         })
         .catch(error => console.log('error', error));
             })
+//FIN SCRIPT PARA CREAR NUEVOS USUARIOS
+
+
+//INICIO SCRIPT PARA ELIMINAR USUARIOS
+let botonesEliminar = document.querySelectorAll(".tableUsuarios .btn-danger");
+botonesEliminar = [...botonesEliminar];
+
+botonesEliminar.forEach(boton => {
+    boton.addEventListener("click", (event) => {
+        let id = boton.dataset.id;
+
+        let confirmacion = confirm("Estás seguro que deseas eliminar el registro con ID: " + id)
+
+        if(!confirmacion){
+            return false;
+        }
+        const requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow'
+        };
+
+        fetch("/api/v1/usuarios/"+id, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                if(result.code){
+                    alert(result.message)
+                    location.reload();
+                }else{
+                    alert(result.message)
+                }
+            })
+            .catch(error => console.log('error', error));
+        })
+})
+
+//FIN SCRIPT PARA ELIMINAR USUARIOS
 </script>

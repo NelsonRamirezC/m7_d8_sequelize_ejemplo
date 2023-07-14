@@ -12,7 +12,7 @@ export const viewUsuariosController = async (req, res) => {
             raw: true,
             order: [["id", "ASC"]]
         });
-        
+
         res.render("usuarios", {
             usuariosView: true,
             usuarios,
@@ -25,3 +25,22 @@ export const viewUsuariosController = async (req, res) => {
         });
     }
 };
+
+
+export const viewDetailsUsuarioController = async (req, res) => {
+    try {
+        let id = req.params.id;
+        let usuario = await Usuario.findByPk(id, {
+            raw: true
+        })
+        console.log(usuario);
+        res.render("detailsUsuario", {
+            usuario
+        });
+    } catch (error) {
+        console.log(error);
+        res.render("detailsUsuario", {
+            error: true
+        });
+    }
+}
