@@ -73,7 +73,7 @@ export const addUsuario = async (req, res) => {
             apellido,
             email,
         });
-        res.status(201).json({ code: 201, message: "ok", data: nuevoUsuario });
+        res.status(201).json({ code: 201, message: "Usuario creado con éxito", data: nuevoUsuario });
     } catch (error) {
         console.log("Error addUsuarios usuarios", error);
         res.status(500).json({

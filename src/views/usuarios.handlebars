@@ -1,1 +1,87 @@
 <h1 class="text-center py-5">Página detalle usuarios.</h1>
+
+<section class="row justify-content-center">
+    <form class="col-12 col-md-10 col-lg-8" id="formAddUsuario">
+        <label for="addNombre" class="form-label">Nombre:</label>
+        <input type="text" id="addNombre" name="nombre" class="form-control" required>
+        <label for="addApellido" class="form-label">Apellido:</label>
+        <input type="text" id="addApellido" name="apellido" class="form-control" required>
+        <label for="addEmail" class="form-label">Email:</label>
+        <input type="email" id="addEmail" name="email" class="form-control" required>
+        <button class="btn btn-primary mt-3">Crear usuario</button>
+    </form>
+
+</section>
+
+{{#if error}}
+
+    <h2 class="text-center py-3">Lo siento, pero no se han podido mostrar los usuarios, intente más tarde</h2>
+
+{{else}}
+    {{#if usuarios}}
+        <h2 class="text-center py-3">Listado de usuarios en el sistema.</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Modificar</th>
+                        <th scope="col">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each usuarios}}
+                        <tr>
+                            <th scope="row">{{this.id}}</th>
+                            <td>{{this.nombre}}</td>
+                            <td>{{this.apellido}}</td>
+                            <td>{{this.email}}</td>
+                            <td><button class="btn btn-warning">Modificar</button></td>
+                            <td><button class="btn btn-danger">Eliminar</button></td>
+                        </tr>
+                    {{/each }}
+                </tbody>
+            </table>
+    {{else}}
+        <h2 class="text-center py-3">No existen usuarios por mostrar</h2>
+    {{/if}}
+
+{{/if }}
+
+<script>
+    let formAddUsuario = document.getElementById("formAddUsuario");
+
+    formAddUsuario.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "nombre": addNombre.value,
+            "apellido": addApellido.value,
+            "email": addEmail.value
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/api/v1/usuarios", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            if(result.code == 201){
+                alert(`Mensaje: ${result.message}\nID nuevo usuario: ${result.data.id}`);
+                location.reload();
+            }else{
+                alert(result.message)
+            }
+        })
+        .catch(error => console.log('error', error));
+            })
+</script>
