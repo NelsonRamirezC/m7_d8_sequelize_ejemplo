@@ -20,6 +20,9 @@ app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 app.set("views", path.resolve(__dirname, "./views"));
 
+//CARPETAS PUBLICAS
+app.use("/public", express.static(path.resolve(__dirname, "../public")));
+
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,15 +31,18 @@ app.use(morgan("tiny"));
 
 
 //endpoints
-
+app.use("/api/v1/usuarios", usuariosRoutes);
 
 //rutas de vista
-app.use("/api/v1/usuarios", usuariosRoutes);
+
 app.use("/", viewsRoutes);
 
 
+app.get("*", (req, res) => {
+    res.render("notFound");
+})
 
 app.all("*", (req, res) => {
-    res.status(404).send("<h1 style='text-align:center; padding-top: 10px;'>RUTA NO EXISTE.</h1>");
+    res.status(404).send({code: 404, message: "El recurso al que intenta acceder no existe."});
 })
 export default app; 

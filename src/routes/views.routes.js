@@ -8,6 +8,6 @@ const router = Router();
 
 //RUTA CONSULTAR TODOS LOS USUARIOS
 router.get(["/", "/home"], viewHomeController);
-router.get(["/usuarios"], viewUsuariosController);
+router.get(["/usuarios", "/users"], viewUsuariosController);
 
 export default router;
