@@ -40,7 +40,7 @@
                             <td>{{this.apellido}}</td>
                             <td>{{this.email}}</td>
                             <td><a href="/detalles/usuario/{{this.id}}" class="btn btn-info">Ver detalles</a></td>
-                            <td><button class="btn btn-warning">Modificar</button></td>
+                            <td><button class="btn btn-warning" data-id="{{this.id}}" data-nombre="{{this.nombre}}" data-apellido="{{this.apellido}}"  data-email="{{this.email}}" data-bs-toggle="modal" data-bs-target="#updateModal">Modificar</button></td>
                             <td><button class="btn btn-danger" data-id="{{this.id}}">Eliminar</button></td>
                         </tr>
                     {{/each }}
@@ -51,6 +51,35 @@
     {{/if}}
 
 {{/if }}
+
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateModalLabel">UPDATE USUARIO</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formUpdateUsuario">
+            <label for="updateId" class="form-label">ID:</label>
+            <input type="number" id="updateId" name="id" class="form-control" disabled required>
+            <label for="updateNombre" class="form-label">Nombre:</label>
+            <input type="text" id="updateNombre" name="nombre" class="form-control" required>
+            <label for="updateApellido" class="form-label">Apellido:</label>
+            <input type="text" id="updateApellido" name="apellido" class="form-control" required>
+            <label for="updateEmail" class="form-label">Email:</label>
+            <input type="email" id="updateEmail" name="email" class="form-control" required>
+        <button class="btn btn-primary mt-3">Actualizar</button>
+    </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
     let formAddUsuario = document.getElementById("formAddUsuario");
@@ -123,4 +152,66 @@ botonesEliminar.forEach(boton => {
 })
 
 //FIN SCRIPT PARA ELIMINAR USUARIOS
+
+
+
+
+//INICIO SCRIPT PARA ACTUALIZAR USUARIOS
+
+let botonesUpdate = document.querySelectorAll(".tableUsuarios .btn-warning");
+botonesUpdate = [...botonesUpdate];
+
+botonesUpdate.forEach(boton => {
+    boton.addEventListener("click", () => {
+        let {id, nombre, apellido, email} = boton.dataset;
+        updateId.value = id;
+        updateNombre.value = nombre;
+        updateApellido.value = apellido;
+        updateEmail.value = email;
+    })
+})
+
+
+let formUpdateUsuario = document.getElementById("formUpdateUsuario");
+
+formUpdateUsuario.addEventListener("submit", (event)=>{
+    event.preventDefault();
+
+    let confirmacion = confirm("Estás seguro que deseas actualizar el registro con ID: " + updateId.value)
+
+        if(!confirmacion){
+            return false;
+        }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+        "email": updateEmail.value,
+        "nombre": updateNombre.value,
+        "apellido": updateApellido.value
+    });
+
+    const requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("/api/v1/usuarios/"+updateId.value, requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        if(result.code == 201){
+            alert(result.message); 
+            location.reload();
+        }else{
+            alert(result.message)
+        }
+    })
+    .catch(error => console.log('error', error));
+
+
+})
+//FIN SCRIPT PARA ACTUALIZAR USUARIOS
 </script>
