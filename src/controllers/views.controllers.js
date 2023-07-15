@@ -1,5 +1,6 @@
 import Usuario from "../models/Usuario.models.js";
 import Direccion from "../models/Direccion.models.js";
+import Departamento from "../models/Departamento.models.js";
 
 export const viewHomeController = (req, res) => {
     res.render("home", {
@@ -77,10 +78,24 @@ export const viewDetailsUsuarioController = async (req, res) => {
 }
 
 
-export const viewDepartmentosCrudController = (req, res) => {
+export const viewDepartmentosCrudController = async (req, res) => {
     try {
+        let departamentos = await Departamento.findAll({
+            raw: true,
+        });
+
+        let usuarios = await Usuario.findAll({
+            raw: true,
+            where: {
+                departamentoId: null,
+            },
+        });
+
+        console.log(departamentos);
         res.render("departamentosCrud", {
-            departamentosCrudView: true
+            departamentosCrudView: true,
+            departamentos,
+            usuarios,
         });
     } catch (error) {
         res.render("departamentosCrud", {

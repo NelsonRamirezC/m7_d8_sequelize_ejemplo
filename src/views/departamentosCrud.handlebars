@@ -42,9 +42,32 @@
 </section>
 {{/if}}
 
+<section>
+    <h2 class="text-center mt-3">Vincular usuarios con deptos.</h2>
+    
+    <form id="formVincularUsuariosDepto">
+        <label for="departamentoId" class="form-label">Depto</label>
+        <select name="departamentoId" id="departamentoId" class="form-control">
+            {{#each departamentos}}
+            <option value="{{this.id}}">{{this.nombre}}</option>
+            {{/each}}
+        </select>
+            
+        <label for="usuarioId" class="form-label">Usuario</label>
+        <select name="usuarioId" id="usuarioId" class="form-control">
+            {{#each usuarios}}
+            <option value="{{this.id}}">{{this.nombre}} {{this.apellido}}</option>
+            {{/each}}
+        </select>
+        <input type="submit" class="btn btn-primary mt-2" value="Vincular">
+    </form>
+</section>
+
 
 
 <script>
+
+    // INICIO SCRIPT DE AGREGAR DEPARTAMENTOS
 
     let formAddDepto = document.getElementById("formAddDepto");
 
@@ -71,5 +94,43 @@
         }
         
     })
+
+    //FIN SCRIPT AGREGAR DEPARTAMENTOS
+
+
+    //INICIO SCRIPT VINCULAR USUARIOS CON DEPARTMENTO
+
+    let formVincularUsuariosDepto = document.getElementById("formVincularUsuariosDepto");
+
+
+    formVincularUsuariosDepto.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        try{
+
+            if(!usuarioId.value || !departamentoId.value){
+                return alert("No existen usuarios o departamentos para vincular.")
+            }
+            let data = new FormData(formVincularUsuariosDepto);
+
+            let response = await fetch("/api/v1/departamentos/vincular", {
+                method: "POST",
+                body: data
+            })
+
+            let result = await response.json();
+
+            if(result.code == 201){
+                alert(result.message);
+                location.reload();
+            }else {
+                alert(result.message);
+            }
+            
+        }catch(error){
+            alert("Error en formulario de vinculación de usuarios con depto.")
+        }
+    })
+
+    //FIN SCRIPT VINCULAR USUARIOS CON DEPARTAMENTO
 
 </script>
