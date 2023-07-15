@@ -8,6 +8,12 @@
         <input type="text" id="addApellido" name="apellido" class="form-control" required>
         <label for="addEmail" class="form-label">Email:</label>
         <input type="email" id="addEmail" name="email" class="form-control" required>
+        <label for="addDireccion" class="form-label">Direccion:</label>
+        <input type="text" id="addDireccion" name="direccion" class="form-control" required>
+        <label for="addComuna" class="form-label">Comuna:</label>
+        <input type="text" id="addComuna" name="comuna" class="form-control" required>
+        <label for="addCiudad" class="form-label">ciudad:</label>
+        <input type="text" id="addCiudad" name="ciudad" class="form-control" required>
         <button class="btn btn-primary mt-3">Crear usuario</button>
     </form>
 
@@ -94,7 +100,10 @@
         const raw = JSON.stringify({
             "nombre": addNombre.value,
             "apellido": addApellido.value,
-            "email": addEmail.value
+            "email": addEmail.value,
+            "direccion": addDireccion.value,
+            "comuna": addComuna.value,
+            "ciudad": addCiudad.value
         });
 
         const requestOptions = {

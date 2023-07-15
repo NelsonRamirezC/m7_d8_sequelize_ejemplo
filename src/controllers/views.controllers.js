@@ -1,4 +1,5 @@
 import Usuario from "../models/Usuario.models.js";
+import Direccion from "../models/Direccion.models.js";
 
 export const viewHomeController = (req, res) => {
     res.render("home", {
@@ -10,9 +11,18 @@ export const viewUsuariosController = async (req, res) => {
     try {
         let usuarios = await Usuario.findAll({
             raw: true,
-            order: [["id", "ASC"]]
+            order: [["id", "ASC"]],
+            attributes: ["id", "nombre", "apellido", "email"],
+            include: [
+                {
+                    model: Direccion,
+                    as: "direccion",
+                    attributes: { exclude: ["usuarioId"] },
+                    raw: true,
+                },
+            ],
         });
-
+        console.log(usuarios);
         res.render("usuarios", {
             usuariosView: true,
             usuarios,
@@ -31,8 +41,21 @@ export const viewDetailsUsuarioController = async (req, res) => {
     try {
         let id = req.params.id;
         let usuario = await Usuario.findByPk(id, {
-            raw: true
-        })
+            raw: true,
+            include: [
+                {
+                    model: Direccion,
+                    as: "direccion",
+                    attributes: { exclude: ["usuarioId"] },
+                },
+            ],
+        });
+        usuario.direccion = {
+            id: usuario["direccion.id"],
+            direccion: usuario["direccion.direccion"],
+            comuna: usuario["direccion.comuna"],
+            ciudad: usuario["direccion.ciudad"],
+        };
         console.log(usuario);
         res.render("detailsUsuario", {
             usuario

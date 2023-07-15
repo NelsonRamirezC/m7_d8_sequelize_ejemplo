@@ -1,8 +1,15 @@
 import Usuario from "../models/Usuario.models.js";
+import Direccion from "../models/Direccion.models.js";
 
 export const findAll = async (req, res) => {
     try {
         let usuarios = await Usuario.findAll({
+            order: [["id", "ASC"]],
+            include: [{
+                    model: Direccion,
+                    as: "direccion",
+                }
+            ],
             attributes: ["id", "nombre", "apellido", "email"],
         });
         res.json({ code: 200, message: "ok", data: usuarios });
@@ -25,6 +32,13 @@ export const findById = async (req, res) => {
         }
         let usuario = await Usuario.findByPk(id, {
             attributes: ["id", "nombre", "apellido", "email"],
+            include: [
+                {
+                    model: Direccion,
+                    as: "direccion",
+                    attributes: { exclude: ["usuarioId"] },
+                },
+            ],
         });
         if (!usuario) {
             return res.status(400).json({
@@ -32,6 +46,7 @@ export const findById = async (req, res) => {
                 message: "No existe un usuario registrado con el id: " + id,
             });
         }
+
         res.json({ code: 200, message: "ok", data: usuario });
     } catch (error) {
         console.log("Error findById usuarios", error);
@@ -66,14 +81,30 @@ export const findByEmail = async (req, res) => {
 
 export const addUsuario = async (req, res) => {
     try {
-        let { nombre, apellido, email } = req.body;
+        let { nombre, apellido, email, direccion, comuna, ciudad } = req.body;
 
         let nuevoUsuario = await Usuario.create({
             nombre,
             apellido,
             email,
+            direccion: {
+                direccion,
+                comuna,
+                ciudad,
+            },
+        }, {
+            include: {
+                model: Direccion,
+                as: "direccion"
+            }
         });
-        res.status(201).json({ code: 201, message: "Usuario creado con éxito", data: nuevoUsuario });
+
+
+        res.status(201).json({
+            code: 201,
+            message: "Usuario creado con éxito",
+            data: nuevoUsuario,
+        });
     } catch (error) {
         console.log("Error addUsuarios usuarios", error);
         res.status(500).json({
@@ -141,7 +172,11 @@ export const updateUsuario = async (req, res) => {
 
         usuario.update(req.body);
 
-        res.status(201).json({ code: 201, message: "Usuario actualizado con éxito.", data: usuario });
+        res.status(201).json({
+            code: 201,
+            message: "Usuario actualizado con éxito.",
+            data: usuario,
+        });
     } catch (error) {
         console.log("Error updateUsuario", error);
         res.status(500).json({
