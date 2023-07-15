@@ -1,0 +1,43 @@
+<h1 class="text-center mt-3">Departamento CRUD</h1>
+
+{{#if error }}
+    <h2 class="text-center mt-1">No fue posible cargar la información, avise al equipo de soporte.</h2>
+
+{{else}}
+    <h2 class="text-center mt-1">Formulario de creación de departmentos.</h2>
+
+    <section class="row justify-content-center">
+    <form class="col-12 col-md-10 col-lg-8" id="formAddDepto">
+        <label for="addNombre" class="form-label">Nombre:</label>
+        <input type="text" id="addNombre" name="nombre" class="form-control" required>
+        <label for="addCodigo" class="form-label">Código:</label>
+        <input type="text" id="addCodigo" name="codigo" class="form-control" required>
+        <button class="btn btn-primary mt-3">Crear Depto</button>
+    </form>
+
+</section>
+
+<section>
+    {{#if departamentos}}
+        <h2 class="text-center py-3">Listado de departamentos en el sistema.</h2>
+            <table class="table tableDepartamentos">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Código</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each departamentos}}
+                        <tr>
+                            <th scope="row">{{this.id}}</th>
+                            <td>{{this.nombre}}</td>
+                            <td>{{this.codigo}}</td>
+                        </tr>
+                    {{/each }}
+                </tbody>
+            </table>
+    {{/if}}
+</section>
+{{/if}}

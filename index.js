@@ -8,7 +8,7 @@ const PORT = 3000;
 const main = async () => {
     try {
         await db.authenticate();
-        await db.sync({ force: false, alter: true });
+        await db.sync({ force: true, alter: true });
         app.listen(PORT, () => {
             console.log("Servidor escuchando en puerto: " + PORT);
         });

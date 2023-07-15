@@ -75,3 +75,29 @@ export const viewDetailsUsuarioController = async (req, res) => {
         });
     }
 }
+
+
+export const viewDepartmentosCrudController = (req, res) => {
+    try {
+        res.render("departamentosCrud", {
+            departamentosCrudView: true
+        });
+    } catch (error) {
+        res.render("departamentosCrud", {
+            error: true,
+            departamentosCrudView: true,
+        });
+    }
+}
+export const viewDepartmentosController = (req, res) => {
+    try {
+        res.render("departamentos", {
+            departamentosView: true,
+        });
+    } catch (error) {
+        res.render("departamentos", {
+            error: "no fue posible mostrar la información de los departamentos, intente más tarde.",
+            departamentosView: true,
+        });
+    }
+}
