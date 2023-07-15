@@ -7,6 +7,7 @@ const Departamento = sequelize.define(
         nombre: {
             type: DataTypes.STRING(50),
             allowNull: false,
+            unique: true,
             validate: {
                 notEmpty: true,
             },

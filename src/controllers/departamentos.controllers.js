@@ -20,9 +20,6 @@ export const addDepartamentos = async (req, res) => {
     try {
         let { nombre, codigo } =
             req.body;
-        console.log(req.body);
-        
-        console.log(nombre, codigo);
 
         let nuevoDepartamento = await Departamento.create(
             {
