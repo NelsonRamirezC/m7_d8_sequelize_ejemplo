@@ -4,6 +4,7 @@ import morgan from "morgan";
 import { create } from "express-handlebars";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import viewsRoutes from "./routes/views.routes.js";
+import departamentosRoutes from "./routes/departamentos.routes.js";
 
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -32,6 +33,7 @@ app.use(morgan("tiny"));
 
 //endpoints
 app.use("/api/v1/usuarios", usuariosRoutes);
+app.use("/api/v1/departamentos", departamentosRoutes);
 
 //rutas de vista
 
