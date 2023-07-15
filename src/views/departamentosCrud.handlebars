@@ -41,3 +41,35 @@
     {{/if}}
 </section>
 {{/if}}
+
+
+
+<script>
+
+    let formAddDepto = document.getElementById("formAddDepto");
+
+    formAddDepto.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        try{
+            const datos = new FormData(formAddDepto);
+            let response = await fetch("/api/v1/departamentos",{
+                method: "POST",
+                body: datos
+            });
+            let result = await response.json();
+            if(result.code == 201){
+                alert(result.message);
+                location.reload();
+            }else{
+                alert(result.message);
+            }
+
+        }catch(error){
+            console.log(error);
+            alert("Error al crear el nuevo departemento.")
+        }
+        
+    })
+
+</script>

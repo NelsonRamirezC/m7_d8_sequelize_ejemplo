@@ -5,6 +5,7 @@ import { create } from "express-handlebars";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import viewsRoutes from "./routes/views.routes.js";
 import departamentosRoutes from "./routes/departamentos.routes.js";
+import fileUpload from "express-fileupload";
 
 import * as path from "path";
 import { fileURLToPath } from "url";
@@ -27,6 +28,7 @@ app.use("/public", express.static(path.resolve(__dirname, "../public")));
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 app.use(cors());
 app.use(morgan("tiny"));
 
