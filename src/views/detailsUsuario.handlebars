@@ -4,15 +4,24 @@
 {{#if error}}
     <h2 class="text-center">Hemos tenido un problema para mostrar el contenido de esta vista.</h2>
 {{else}}
-
-    {{#if usuario}}
+    <section class="perfilUsuario">
+        {{#if usuario}}
         <p>Nombre: {{usuario.nombre}}</p>
         <p>Apellido: {{usuario.apellido}}</p>
         <p>Email: {{usuario.email}}</p>
         <p>Direccion: {{usuario.direccion.direccion}}</p>
         <p>Comuna: {{usuario.direccion.comuna}}</p>
         <p>Ciudad: {{usuario.direccion.ciudad}}</p>
+        <img src="{{usuario.imagen}}" alt="{{usuario.nombre}}-img">
     {{else}}
         <h2>no se ha encontrado información del usuario.</h2>
     {{/if}}
+    </section>
 {{/if}}
+
+
+<style>
+    .perfilUsuario img {
+        width: 200px;
+    }
+</style>

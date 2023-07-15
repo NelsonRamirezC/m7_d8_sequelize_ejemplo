@@ -8,6 +8,8 @@
         <input type="text" id="addApellido" name="apellido" class="form-control" required>
         <label for="addEmail" class="form-label">Email:</label>
         <input type="email" id="addEmail" name="email" class="form-control" required>
+        <label for="addimagen" class="form-label">Imagen:</label>
+        <input type="text" id="addImagen" name="imagen" class="form-control" required>
         <label for="addDireccion" class="form-label">Direccion:</label>
         <input type="text" id="addDireccion" name="direccion" class="form-control" required>
         <label for="addComuna" class="form-label">Comuna:</label>
@@ -51,6 +53,7 @@
                             data-nombre="{{this.nombre}}"
                             data-apellido="{{this.apellido}}"
                             data-email="{{this.email}}"
+                            data-imagen="{{this.imagen}}"
                             data-direccion="{{this.direccion.direccion}}"
                             data-comuna="{{this.direccion.comuna}}"
                             data-ciudad="{{this.direccion.ciudad}}"
@@ -87,6 +90,8 @@
             <input type="text" id="updateApellido" name="apellido" class="form-control" required>
             <label for="updateEmail" class="form-label">Email:</label>
             <input type="email" id="updateEmail" name="email" class="form-control" required>
+            <label for="updateimagen" class="form-label">Imagen:</label>
+            <input type="text" id="updateImagen" name="imagen" class="form-control" required>
             <label for="updateDireccion" class="form-label">Direccion:</label>
             <input type="text" id="updateDireccion" name="direccion" class="form-control" required>
             <label for="updateComuna" class="form-label">Comuna:</label>
@@ -117,6 +122,7 @@
             "nombre": addNombre.value,
             "apellido": addApellido.value,
             "email": addEmail.value,
+            "imagen": addImagen.value,
             "direccion": addDireccion.value,
             "comuna": addComuna.value,
             "ciudad": addCiudad.value
@@ -188,11 +194,12 @@ botonesUpdate = [...botonesUpdate];
 
 botonesUpdate.forEach(boton => {
     boton.addEventListener("click", () => {
-        let {id, nombre, apellido, email, direccion, comuna, ciudad} = boton.dataset;
+        let {id, nombre, apellido, email, imagen, direccion, comuna, ciudad} = boton.dataset;
         updateId.value = id;
         updateNombre.value = nombre;
         updateApellido.value = apellido;
         updateEmail.value = email;
+        updateImagen.value = imagen;
         updateDireccion.value = direccion;
         updateComuna.value = comuna;
         updateCiudad.value = ciudad;
@@ -218,6 +225,8 @@ formUpdateUsuario.addEventListener("submit", (event)=>{
         "email": updateEmail.value,
         "nombre": updateNombre.value,
         "apellido": updateApellido.value,
+        "email": updateEmail.value,
+        "imagen": updateImagen.value,
         "direccion": updateDireccion.value,
         "comuna": updateComuna.value,
         "ciudad": updateCiudad.value

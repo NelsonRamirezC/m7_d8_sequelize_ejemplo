@@ -10,7 +10,7 @@ export const findAll = async (req, res) => {
                     as: "direccion",
                 }
             ],
-            attributes: ["id", "nombre", "apellido", "email"],
+            attributes: ["id", "nombre", "apellido", "email", "imagen"],
         });
         res.json({ code: 200, message: "ok", data: usuarios });
     } catch (error) {
@@ -31,7 +31,7 @@ export const findById = async (req, res) => {
                 .json({ code: 400, message: "Debe enviar un id númerico." });
         }
         let usuario = await Usuario.findByPk(id, {
-            attributes: ["id", "nombre", "apellido", "email"],
+            attributes: ["id", "nombre", "apellido", "email", "imagen"],
             include: [
                 {
                     model: Direccion,
@@ -81,12 +81,13 @@ export const findByEmail = async (req, res) => {
 
 export const addUsuario = async (req, res) => {
     try {
-        let { nombre, apellido, email, direccion, comuna, ciudad } = req.body;
+        let { nombre, apellido, email, imagen, direccion, comuna, ciudad } = req.body;
 
         let nuevoUsuario = await Usuario.create({
             nombre,
             apellido,
             email,
+            imagen,
             direccion: {
                 direccion,
                 comuna,
@@ -159,7 +160,7 @@ export const updateUsuario = async (req, res) => {
         }
 
         let usuario = await Usuario.findByPk(id, {
-            attributes: ["id", "nombre", "apellido", "email"],
+            attributes: ["id", "nombre", "apellido", "email", "imagen"],
         });
 
         if (!usuario) {
@@ -170,12 +171,13 @@ export const updateUsuario = async (req, res) => {
             });
         }
 
-        let { nombre, apellido, email, direccion, comuna, ciudad } = req.body;
+        let { nombre, apellido, email, imagen, direccion, comuna, ciudad } = req.body;
         usuario.update(
             {
                 nombre,
                 apellido,
                 email,
+                imagen
             },
         );
 

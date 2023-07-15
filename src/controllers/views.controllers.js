@@ -12,7 +12,7 @@ export const viewUsuariosController = async (req, res) => {
         let usuarios = await Usuario.findAll({
             raw: true,
             order: [["id", "ASC"]],
-            attributes: ["id", "nombre", "apellido", "email"],
+            attributes: ["id", "nombre", "apellido", "email", "imagen"],
             include: [
                 {
                     model: Direccion,

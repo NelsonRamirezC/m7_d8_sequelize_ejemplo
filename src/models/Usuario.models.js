@@ -27,6 +27,13 @@ const Usuario = sequelize.define(
                 notEmpty: true,
             },
         },
+        imagen: {
+            type: DataTypes.STRING(500),
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+            },
+        },
     },
     {
         timestamps: false,
