@@ -170,7 +170,27 @@ export const updateUsuario = async (req, res) => {
             });
         }
 
-        usuario.update(req.body);
+        let { nombre, apellido, email, direccion, comuna, ciudad } = req.body;
+        usuario.update(
+            {
+                nombre,
+                apellido,
+                email,
+            },
+        );
+
+        await Direccion.update(
+            {
+                direccion,
+                comuna,
+                ciudad,
+            },
+            {
+                where: {
+                    usuarioId: usuario.id,
+                },
+            }
+        );
 
         res.status(201).json({
             code: 201,

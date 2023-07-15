@@ -22,6 +22,15 @@ export const viewUsuariosController = async (req, res) => {
                 },
             ],
         });
+        usuarios = usuarios.map(usuario => {
+            usuario.direccion = {
+            id: usuario["direccion.id"],
+            direccion: usuario["direccion.direccion"],
+            comuna: usuario["direccion.comuna"],
+            ciudad: usuario["direccion.ciudad"],
+            };
+            return usuario;
+        })
         console.log(usuarios);
         res.render("usuarios", {
             usuariosView: true,
@@ -56,7 +65,6 @@ export const viewDetailsUsuarioController = async (req, res) => {
             comuna: usuario["direccion.comuna"],
             ciudad: usuario["direccion.ciudad"],
         };
-        console.log(usuario);
         res.render("detailsUsuario", {
             usuario
         });

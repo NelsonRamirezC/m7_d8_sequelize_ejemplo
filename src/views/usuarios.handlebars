@@ -46,7 +46,17 @@
                             <td>{{this.apellido}}</td>
                             <td>{{this.email}}</td>
                             <td><a href="/detalles/usuario/{{this.id}}" class="btn btn-info">Ver detalles</a></td>
-                            <td><button class="btn btn-warning" data-id="{{this.id}}" data-nombre="{{this.nombre}}" data-apellido="{{this.apellido}}"  data-email="{{this.email}}" data-bs-toggle="modal" data-bs-target="#updateModal">Modificar</button></td>
+                            <td><button class="btn btn-warning"
+                            data-id="{{this.id}}"
+                            data-nombre="{{this.nombre}}"
+                            data-apellido="{{this.apellido}}"
+                            data-email="{{this.email}}"
+                            data-direccion="{{this.direccion.direccion}}"
+                            data-comuna="{{this.direccion.comuna}}"
+                            data-ciudad="{{this.direccion.ciudad}}"
+
+                            data-bs-toggle="modal" data-bs-target="#updateModal"
+                            >Modificar</button></td>
                             <td><button class="btn btn-danger" data-id="{{this.id}}">Eliminar</button></td>
                         </tr>
                     {{/each }}
@@ -77,7 +87,13 @@
             <input type="text" id="updateApellido" name="apellido" class="form-control" required>
             <label for="updateEmail" class="form-label">Email:</label>
             <input type="email" id="updateEmail" name="email" class="form-control" required>
-        <button class="btn btn-primary mt-3">Actualizar</button>
+            <label for="updateDireccion" class="form-label">Direccion:</label>
+            <input type="text" id="updateDireccion" name="direccion" class="form-control" required>
+            <label for="updateComuna" class="form-label">Comuna:</label>
+            <input type="text" id="updateComuna" name="comuna" class="form-control" required>
+            <label for="updateCiudad" class="form-label">ciudad:</label>
+            <input type="text" id="updateCiudad" name="ciudad" class="form-control" required>
+            <button class="btn btn-primary mt-3">Actualizar</button>
     </form>
       </div>
       <div class="modal-footer">
@@ -172,11 +188,14 @@ botonesUpdate = [...botonesUpdate];
 
 botonesUpdate.forEach(boton => {
     boton.addEventListener("click", () => {
-        let {id, nombre, apellido, email} = boton.dataset;
+        let {id, nombre, apellido, email, direccion, comuna, ciudad} = boton.dataset;
         updateId.value = id;
         updateNombre.value = nombre;
         updateApellido.value = apellido;
         updateEmail.value = email;
+        updateDireccion.value = direccion;
+        updateComuna.value = comuna;
+        updateCiudad.value = ciudad;
     })
 })
 
@@ -198,7 +217,10 @@ formUpdateUsuario.addEventListener("submit", (event)=>{
     const raw = JSON.stringify({
         "email": updateEmail.value,
         "nombre": updateNombre.value,
-        "apellido": updateApellido.value
+        "apellido": updateApellido.value,
+        "direccion": updateDireccion.value,
+        "comuna": updateComuna.value,
+        "ciudad": updateCiudad.value
     });
 
     const requestOptions = {
