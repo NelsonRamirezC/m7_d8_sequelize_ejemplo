@@ -1,7 +1,7 @@
 import Usuario from "../models/Usuario.models.js";
 import Direccion from "../models/Direccion.models.js";
-import Proyecto from "../models/Proyecto.models.js"
-import { Op } from "sequelize";
+import sequelize from "../database/database.js";
+import { QueryTypes } from"sequelize";
 
 export const findAll = async (req, res) => {
     try {
@@ -214,25 +214,26 @@ export const updateUsuario = async (req, res) => {
 export const findAllUsuariosOutProjecto = async (req, res) => {
     try {
         let { proyectoId } = req.params;
-        
-        let usuarios = await Usuario.findAll({
-            order: [["id", "ASC"]],
-            attributes: ["id", "nombre", "apellido"],
-            include: [
-                {
-                    model: Proyecto,
-                    as: "proyectos",
-                    where: {
-                        id: {
-                            [Op.ne]: proyectoId,
-                        },
-                    },
-                },
-            ],
-        });
 
-        console.log(usuarios)
-        res.json({ code: 200, message: "ok", data: usuarios });
+        let rows = await sequelize.query(
+            `
+            select u."id", u."nombre", u."apellido" from "Usuarios" u
+            full outer join "ProyectosUsuarios" pu
+            on u.id = pu."usuarioId"
+            full outer join "Proyectos" p
+            on pu."proyectoId" = p.id
+            where p.id  <> ? or p.id is null;
+            `,
+            {
+                replacements: [proyectoId],
+                type: QueryTypes.SELECT,
+            }
+        );
+    
+        
+
+        console.log(rows);
+        res.json({ code: 200, message: "ok", data: rows });
 
     } catch (error) {
         console.log("Error findAllUsuariosOutProjecto usuarios", error);

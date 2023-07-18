@@ -51,17 +51,16 @@
     
     <form id="formVincularUsuariosProyecto">
         <label for="proyectoId" class="form-label">Depto</label>
-        <select name="proyectoId" id="proyectoId" class="form-control">
+        <select name="proyectoId" id="proyectoId" class="form-control" required>
+            <option>Selecciona un proyecto.</option>
             {{#each proyectos}}
             <option value="{{this.id}}">{{this.nombre}}</option>
             {{/each}}
         </select>
             
-        <label for="usuarioId" class="form-label">Usuario</label>
-        <select name="usuarioId" id="usuarioId" class="form-control">
-            {{#each usuarios}}
-            <option value="{{this.id}}">{{this.nombre}} {{this.apellido}}</option>
-            {{/each}}
+        <label for="vincularUsuarioId" class="form-label">Usuario</label>
+        <select name="usuarioId" id="vincularUsuarioId" class="form-control">
+
         </select>
         <input type="submit" class="btn btn-primary mt-2" value="Vincular">
     </form>
@@ -126,6 +125,37 @@ formVincularProyectos.addEventListener("submit", async (event) => {
     }catch(error){
         console.log(error);
         alert("error al vincular el proyecto con usuario.")
+    }
+})
+
+
+let selectProyectoId = document.getElementById("proyectoId");
+
+selectProyectoId.addEventListener("change", async (event) => {
+    try{
+
+        let id = selectProyectoId.value;
+        if(id){
+            let response = await fetch("/api/v1/usuarios/out/project/"+id);
+            let result = await response.json();
+            
+            if(result.code == 200){
+                let options = "";
+                result.data.forEach(usuario => {
+                    options += `<option value="${usuario.id}">${usuario.nombre} ${usuario.apellido}</option>`
+                })
+                let vincularUsuarioId = document.getElementById("vincularUsuarioId");
+                vincularUsuarioId.innerHTML = options;
+                
+            }else{
+                alert("No se han encontrado datos.")
+                let vincularUsuarioId = document.getElementById("vincularUsuarioId");
+                vincularUsuarioId.innerHTML = "";
+            }
+        }
+    }catch(error){
+        console.log(error);
+        alert("Error al buscar usuarios disponibles.")
     }
 })
 
