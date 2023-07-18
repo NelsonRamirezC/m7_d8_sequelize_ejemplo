@@ -1,6 +1,7 @@
 import Usuario from "../models/Usuario.models.js";
 import Direccion from "../models/Direccion.models.js";
 import Departamento from "../models/Departamento.models.js";
+import Proyecto from "../models/Proyecto.models.js";
 
 export const viewHomeController = (req, res) => {
     res.render("home", {
@@ -116,3 +117,28 @@ export const viewDepartmentosController = (req, res) => {
         });
     }
 }
+
+
+export const viewProyectosCrudController = async (req, res) => {
+    try {
+
+        let proyectos = await Proyecto.findAll({
+            raw: true,
+        });
+
+        let usuarios = await Usuario.findAll({
+            raw:true
+        });
+
+        res.render("proyectosCrud", {
+            proyectosCrudView: true,
+            usuarios,
+            proyectos
+        });
+    } catch (error) {
+        res.render("proyectosCrud", {
+            error: "no fue posible mostrar la información de los proyectos, intente más tarde.",
+            proyectosCrudView: true,
+        });
+    }
+};

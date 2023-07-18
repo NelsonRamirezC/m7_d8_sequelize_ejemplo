@@ -4,7 +4,7 @@ import Usuario from "../models/Usuario.models.js";
 export const findAll = async (req, res) => {
     try {
         let departamentos = await Departamento.findAll({
-            order: [["id", "ASC"]]
+            order: [["id", "ASC"]],
         });
         res.json({ code: 200, message: "ok", data: departamentos });
     } catch (error) {

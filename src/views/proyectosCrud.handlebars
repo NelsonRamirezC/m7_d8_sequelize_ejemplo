@@ -1,0 +1,132 @@
+<h1 class="text-center mt-3">Proyectos CRUD</h1>
+
+<section>
+     <h2 class="text-center mt-1">Formulario de creación de proyectos.</h2>
+
+    <section class="row justify-content-center">
+    <form class="col-12 col-md-10 col-lg-8" id="formAddDProyecto">
+        <label for="nombre" class="form-label">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" class="form-control" required>
+        <label for="usuarioId" class="form-label">Encargado:</label>
+        <select name="usuarioId" id="usuarioId" class="form-control">
+            {{#each usuarios}}
+                <option value="{{this.id}}">{{this.nombre}}</option>
+            {{/each}}
+            
+        </select>
+        <button class="btn btn-primary mt-3">Crear Proyecto</button>
+    </form>
+</section>
+
+
+<section>
+    {{#if proyectos}}
+        <h2 class="text-center py-3">Listado de proyectos en el sistema.</h2>
+            <table class="table tableDepartamentos">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Encargado</th>
+                        <th scope="col">Detalle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each proyectos}}
+                        <tr>
+                            <th scope="row">{{this.id}}</th>
+                            <td>{{this.nombre}}</td>
+                            <td>{{this.encargado}}</td>
+                            <td><a href="/proyectos/detalle/{{this.id}}" class="btn btn-primary">Ver detalle</a></td>
+                        </tr>
+                    {{/each }}
+                </tbody>
+            </table>
+    {{/if}}
+</section>
+
+
+<section>
+    <h2 class="text-center mt-3">Vincular usuarios con proyectos.</h2>
+    
+    <form id="formVincularUsuariosProyecto">
+        <label for="proyectoId" class="form-label">Depto</label>
+        <select name="proyectoId" id="proyectoId" class="form-control">
+            {{#each proyectos}}
+            <option value="{{this.id}}">{{this.nombre}}</option>
+            {{/each}}
+        </select>
+            
+        <label for="usuarioId" class="form-label">Usuario</label>
+        <select name="usuarioId" id="usuarioId" class="form-control">
+            {{#each usuarios}}
+            <option value="{{this.id}}">{{this.nombre}} {{this.apellido}}</option>
+            {{/each}}
+        </select>
+        <input type="submit" class="btn btn-primary mt-2" value="Vincular">
+    </form>
+</section>
+
+<script>
+
+
+let formAddDProyecto = document.getElementById("formAddDProyecto");
+
+formAddDProyecto.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    try{
+        let data = new FormData(formAddDProyecto);
+
+        let response = await fetch("/api/v1/proyectos", {
+            method: "POST",
+            body: data
+        })
+
+        let result = await response.json();
+
+        if(result.code == 201){
+            alert(result.message);
+            location.reload();
+        }else {
+            alert(result.message);
+        }
+
+    }catch(error){
+        alert("error al crear el proyecto.")
+    }
+})
+
+
+
+//LÓGICA VINCULAR USUARIOS CON PROYECTOS
+
+let formVincularProyectos = document.getElementById("formVincularUsuariosProyecto");
+
+formVincularProyectos.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    
+     try{
+        let data = new FormData(formVincularProyectos);
+
+        let response = await fetch("/api/v1/proyectos/vincular", {
+            method: "POST",
+            body: data
+        })
+
+        let result = await response.json();
+
+        if(result.code == 201){
+            alert(result.message);
+            location.reload();
+        }else {
+            alert(result.message);
+        }
+
+    }catch(error){
+        console.log(error);
+        alert("error al vincular el proyecto con usuario.")
+    }
+})
+
+</script>

@@ -5,6 +5,7 @@ import { create } from "express-handlebars";
 import usuariosRoutes from "./routes/usuarios.routes.js";
 import viewsRoutes from "./routes/views.routes.js";
 import departamentosRoutes from "./routes/departamentos.routes.js";
+import proyectosRoutes from "./routes/proyectos.routes.js";
 import fileUpload from "express-fileupload";
 
 import * as path from "path";
@@ -32,21 +33,23 @@ app.use(fileUpload());
 app.use(cors());
 app.use(morgan("tiny"));
 
-
 //endpoints
 app.use("/api/v1/usuarios", usuariosRoutes);
 app.use("/api/v1/departamentos", departamentosRoutes);
+app.use("/api/v1/proyectos", proyectosRoutes);
 
 //rutas de vista
 
 app.use("/", viewsRoutes);
 
-
 app.get("*", (req, res) => {
     res.render("notFound");
-})
+});
 
 app.all("*", (req, res) => {
-    res.status(404).send({code: 404, message: "El recurso al que intenta acceder no existe."});
-})
-export default app; 
+    res.status(404).send({
+        code: 404,
+        message: "El recurso al que intenta acceder no existe.",
+    });
+});
+export default app;

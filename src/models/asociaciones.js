@@ -1,6 +1,8 @@
 import Direccion from "./Direccion.models.js";
 import Usuario from "./Usuario.models.js";
 import Departamento from "./Departamento.models.js";
+import Proyecto from "./Proyecto.models.js";
+
 
 //RELACIÓN 1 A 1 ENTRE USUARIO Y DIRECCIÓN
 Usuario.hasOne(Direccion, {
@@ -26,4 +28,18 @@ Departamento.hasMany(Usuario, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
     as: "usuarios",
+});
+
+
+//RELACIÓN muchos a muchos USUARIOS - PROYECTOS
+
+Usuario.belongsToMany(Proyecto, {
+    through: "ProyectosUsuarios",
+    as: "proyectos",
+    foreignKey: "usuarioId"
+});
+Proyecto.belongsToMany(Usuario, {
+    through: "ProyectosUsuarios",
+    as: "usuarios",
+    foreignKey: "proyectoId",
 });

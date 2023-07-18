@@ -6,6 +6,7 @@ import {
     findByEmail,
     deleteUsuario,
     updateUsuario,
+    findAllUsuariosOutProjecto,
 } from "../controllers/usuarios.controllers.js";
 
 const router = Router();
@@ -27,5 +28,7 @@ router.delete("/:id", deleteUsuario);
 
 //RUTA MODIFICAR USUARIOS
 router.put("/:id", updateUsuario);
+
+router.get("/out/project/:proyectoId", findAllUsuariosOutProjecto);
 
 export default router;

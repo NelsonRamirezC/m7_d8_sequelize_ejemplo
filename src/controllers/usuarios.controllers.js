@@ -1,5 +1,7 @@
 import Usuario from "../models/Usuario.models.js";
 import Direccion from "../models/Direccion.models.js";
+import Proyecto from "../models/Proyecto.models.js"
+import { Op } from "sequelize";
 
 export const findAll = async (req, res) => {
     try {
@@ -204,6 +206,39 @@ export const updateUsuario = async (req, res) => {
         res.status(500).json({
             code: 500,
             message: "Error al intentar actualizar el usuario",
+        });
+    }
+};
+
+
+export const findAllUsuariosOutProjecto = async (req, res) => {
+    try {
+        let { proyectoId } = req.params;
+        
+        let usuarios = await Usuario.findAll({
+            order: [["id", "ASC"]],
+            attributes: ["id", "nombre", "apellido"],
+            include: [
+                {
+                    model: Proyecto,
+                    as: "proyectos",
+                    where: {
+                        id: {
+                            [Op.ne]: proyectoId,
+                        },
+                    },
+                },
+            ],
+        });
+
+        console.log(usuarios)
+        res.json({ code: 200, message: "ok", data: usuarios });
+
+    } catch (error) {
+        console.log("Error findAllUsuariosOutProjecto usuarios", error);
+        res.status(500).json({
+            code: 500,
+            message: "Error al obtener los datos de usuarios.",
         });
     }
 };
